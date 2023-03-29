@@ -23,7 +23,7 @@ connect()
 
 
 
-
+// an enpoint that returns the character 
 app.get("/api/character/:tag", (req, res) => {
   const gamerTag = req.params.tag
   res.writeHead(200)
