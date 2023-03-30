@@ -122,7 +122,6 @@ app.delete("/api/character/:tag", async (req, res) => {
   }
 })
 
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
