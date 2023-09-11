@@ -1,5 +1,6 @@
 // Express app to handle api endpoints for our gaming data server
 
+// eslint-disable
 const express = require("express")
 const route = express()
 const port = 3000
@@ -84,6 +85,8 @@ route.post("/api/character/:tag", async (req, res) => {
     }
 })
 
+//TODO: make a database on local machine to test
+
 route.delete("/api/character/:tag", async (req, res) => {
     const gamerTag = req.params.tag
     try {
@@ -104,8 +107,6 @@ route.delete("/api/character/:tag", async (req, res) => {
     }
 })
 
-route.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+route.listen(port, () => console.log(`Example app listening on port ${port}`))
 
 module.exports = route
