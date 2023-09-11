@@ -46,7 +46,7 @@ route.put("/api/character/:tag", async (req, res) => {
                         overshield: 100,
                     },
                 },
-            }
+            },
         )
         if (updateResult.modifiedCount === 1) {
             res.status(200).send({ message: "Document updated" })
