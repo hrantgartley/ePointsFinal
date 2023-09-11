@@ -31,9 +31,7 @@ route.get("/api/character/:tag", (req, res) => {
 
 route.put("/api/character/:tag", async (req, res) => {
     const gamerTag = req.params.tag
-
     const character = db.collection("character")
-
     try {
         const updateResult = await character.updateOne(
             { gamerTag: gamerTag },
@@ -50,7 +48,6 @@ route.put("/api/character/:tag", async (req, res) => {
                 },
             }
         )
-
         if (updateResult.modifiedCount === 1) {
             res.status(200).send({ message: "Document updated" })
         } else {
@@ -66,7 +63,6 @@ route.put("/api/character/:tag", async (req, res) => {
 route.post("/api/character/:tag", async (req, res) => {
     const charData = req.params.tag
     const character = db.collection("character")
-
     try {
         const insertRes = await character.insertOne({
             tag: charData,
