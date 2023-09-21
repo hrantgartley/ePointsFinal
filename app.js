@@ -2,12 +2,12 @@
 
 // eslint-disable
 const express = require("express")
-const route = express()
+const app = express()
 const port = 3000
 const { MongoClient } = require("mongodb")
 const url = "mongodb://localhost:27017/Game"
 const client = new MongoClient(url)
-route.use(express.json())
+app.use(express.json())
 const dbname = "gamingData"
 const db = client.db(dbname)
 const collection = db.collection("character")
@@ -23,16 +23,18 @@ const connect = async () => {
 connect()
 
 // an enpoint that returns the character
-route.get("/api/character/:tag", (req, res) => {
+app.get("/api/character/:tag", (req, res) => {
     const gamerTag = req.params.tag
     res.writeHead(200)
     console.log(`The client sent us: ${gamerTag} as the gamerTag`)
     res.end(`{"characterTag": "${gamerTag}"}`)
 })
 
-route.put("/api/character/:tag", async (req, res) => {
+// an endpoint that updates the character
+app.put("/api/character/:tag", async (req, res) => {
     const gamerTag = req.params.tag
     const character = db.collection("character")
+    const startingTime = Date.now()
     try {
         const updateResult = await character.updateOne(
             { gamerTag: gamerTag },
@@ -59,9 +61,11 @@ route.put("/api/character/:tag", async (req, res) => {
         res.status(500).send({ message: "Internal Server Error" })
     }
     console.log("The client has sent the following data: ", req.body)
+    const endingTime = Date.now()
+    console.log(`The request took ${endingTime - startingTime}ms to complete`)
 })
 
-route.post("/api/character/:tag", async (req, res) => {
+app.post("/api/character/post/:tag", async (req, res) => {
     const charData = req.params.tag
     const character = db.collection("character")
     try {
@@ -87,7 +91,7 @@ route.post("/api/character/:tag", async (req, res) => {
 
 //TODO: make a database on local machine to test
 
-route.delete("/api/character/:tag", async (req, res) => {
+app.delete("/api/character/:tag", async (req, res) => {
     const gamerTag = req.params.tag
     try {
         const deleteOne = await collection.deleteOne({
@@ -107,6 +111,6 @@ route.delete("/api/character/:tag", async (req, res) => {
     }
 })
 
-route.listen(port, () => console.log(`Example app listening on port ${port}`))
+app.listen(port, () => console.log(`Example app listening on port ${port}`))
 
-module.exports = route
+module.exports = app
